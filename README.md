@@ -165,9 +165,7 @@ src/
 scripts/
 ```
 
-## Candidate Notes
-
-This project was built to emphasize engineering fundamentals recruiters and hiring managers evaluate in backend candidates:
+## This Backend System ensures : 
 
 - Practical API security
 - Maintainable code organization
