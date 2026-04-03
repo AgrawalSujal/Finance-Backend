@@ -1,4 +1,4 @@
-const FinancialService = require('../services/financialService');
+const FinancialService = require('../services/FinancialService');
 
 exports.createRecord = async (req, res, next) => {
     try {
