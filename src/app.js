@@ -234,10 +234,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.get('/api/auth/login', (req, res) => {
-        const html = renderApiPage({
-                title: 'Auth Login Endpoint',
-                subtitle: 'Use this page to test the POST /api/auth/login endpoint from your browser.',
-                content: `
+    const html = renderApiPage({
+        title: 'Auth Login Endpoint',
+        subtitle: 'Use this page to test the POST /api/auth/login endpoint from your browser.',
+        content: `
                     <div class="panel">
                         <label>Email
                             <input id="email" type="email" placeholder="admin@example.com" value="admin@example.com" />
@@ -286,24 +286,24 @@ app.get('/api/auth/login', (req, res) => {
                         });
                     </script>
                 `,
-        });
+    });
 
-        res.status(200).send(html);
+    res.status(200).send(html);
 });
 
 app.get('/api/dashboard/summary', (req, res, next) => {
-        const wantsHtml = (req.headers.accept || '').includes('text/html');
-        const hasAuth = Boolean(req.headers.authorization);
-        const wantsRawJson = req.query.format === 'json';
+    const wantsHtml = (req.headers.accept || '').includes('text/html');
+    const hasAuth = Boolean(req.headers.authorization);
+    const wantsRawJson = req.query.format === 'json';
 
-        if (hasAuth || wantsRawJson || !wantsHtml) {
-                return next();
-        }
+    if (hasAuth || wantsRawJson || !wantsHtml) {
+        return next();
+    }
 
-        const html = renderApiPage({
-                title: 'Dashboard Summary Endpoint',
-                subtitle: 'Use a Bearer token to fetch GET /api/dashboard/summary directly from this page.',
-                content: `
+    const html = renderApiPage({
+        title: 'Dashboard Summary Endpoint',
+        subtitle: 'Use a Bearer token to fetch GET /api/dashboard/summary directly from this page.',
+        content: `
                     <div class="panel">
                         <label>Timeframe
                             <input id="timeframe" type="text" value="month" placeholder="week | month | year" />
@@ -361,14 +361,14 @@ app.get('/api/dashboard/summary', (req, res, next) => {
                         });
                     </script>
                 `,
-        });
+    });
 
-        return res.status(200).send(html);
+    return res.status(200).send(html);
 });
 
 // Simple homepage for the deployed service root
 app.get('/', (req, res) => {
-        res.status(200).send(`<!doctype html>
+    res.status(200).send(`<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />

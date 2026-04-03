@@ -1,130 +1,85 @@
 # Finance Dashboard Backend API
 
-A Node.js and Express backend for managing financial records with JWT authentication, role-based access control, validation, and dashboard analytics.
+Production-ready backend service for secure financial record management and analytics, built to demonstrate practical backend engineering skills expected in industry roles.
 
-## Overview
+## Recruiter Snapshot
 
-This project provides a secure backend API for a finance dashboard. It supports user authentication, role-aware record management, and summary analytics for income and expense tracking.
+- Designed and implemented a role-based REST API using Node.js, Express, and MongoDB.
+- Delivered secure authentication and authorization with JWT, bcrypt password hashing, and permission middleware.
+- Implemented analytics endpoints (summary, category totals, monthly trends) using efficient MongoDB querying patterns.
+- Added robust validation and standardized error handling to improve API reliability and developer experience.
+- Built deployment-ready configuration and successfully deployed to Render.
+- Validated behavior through automated API tests with a 14/14 passing run.
 
-## Features
+## What This Project Demonstrates
 
-- JWT-based authentication
-- Password hashing with bcryptjs
-- Role-based authorization for Viewer, Analyst, and Admin users
-- Financial record CRUD operations
-- Filtering and pagination for record queries
-- Dashboard summary, category totals, and monthly trends
-- Zod validation for request payloads and query parameters
-- Helmet, CORS, and rate limiting for basic API hardening
+### Backend System Design
+
+- Layered architecture with clear separation of concerns:
+  - Routes for HTTP mapping
+  - Controllers for request/response orchestration
+  - Services for business logic
+  - Models for persistence
+  - Middleware for auth, validation, and error handling
+
+### Security Engineering Practices
+
+- JWT-based authentication flow with protected route middleware
+- Role-based access control for Viewer, Analyst, and Admin roles
+- Password hashing via bcryptjs
+- Security headers via Helmet
+- CORS control and request rate limiting
+- Defensive validation with Zod on body and query inputs
+
+### Data and API Quality
+
+- Full CRUD support for financial records
+- Filter and pagination support for scalable list endpoints
+- Time-based and category-based analytics for dashboard use cases
+- Consistent API response and error formats
+
+## Core Features
+
+- User registration, login, and profile retrieval
+- Admin user management (view, update, delete)
+- Financial records management with role-aware permissions
+- Dashboard analytics:
+  - Total income/expense summary
+  - Category-wise totals
+  - Monthly trend breakdown
 
 ## Tech Stack
 
-| Layer | Technology |
+| Category | Technology |
 |---|---|
 | Runtime | Node.js |
 | Framework | Express.js |
 | Database | MongoDB |
 | ODM | Mongoose |
-| Authentication | JWT |
+| Authentication | JSON Web Token (JWT) |
 | Validation | Zod |
 | Security | bcryptjs, helmet, cors, express-rate-limit |
+| Dev Tooling | nodemon |
 
-## Project Scripts
+## API Surface
 
-| Script | Description |
-|---|---|
-| `npm run start` | Start the server in production mode |
-| `npm run dev` | Start the server with nodemon |
-| `npm run seed` | Seed MongoDB with demo users and financial data |
-| `npm run seed:atlas:reset` | Reset the Atlas dataset and reseed it |
-| `npm run test:api` | Run the full API test suite |
-| `npm run test:quick` | Run the quick smoke test |
-
-## Installation
-
-### Prerequisites
-
-- Node.js 14+
-- npm
-- MongoDB Atlas or a local MongoDB instance
-
-### Setup
-
-```bash
-git clone <repository-url>
-cd finance-backend
-npm install
-```
-
-### Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-PORT=3000
-NODE_ENV=development
-MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/finance-dashboard
-JWT_SECRET=your_super_secret_jwt_key
-JWT_EXPIRE=7d
-BCRYPT_ROUNDS=10
-```
-
-## Running the App
-
-```bash
-npm run dev
-```
-
-For production:
-
-```bash
-npm start
-```
-
-To seed the database:
-
-```bash
-npm run seed
-```
-
-## API Base URL
+Base URL:
 
 ```text
-http://localhost:3000/api
+/api
 ```
 
-## API Endpoints
+Primary endpoint groups:
 
-### Authentication
+- Auth: `/auth/register`, `/auth/login`, `/auth/me`
+- Users (Admin): `/users`, `/users/:id`
+- Records: `/records`, `/records/:id`
+- Dashboard: `/dashboard/summary`, `/dashboard/category-totals`, `/dashboard/monthly-trends`
+- Health: `/health`
 
-- `POST /auth/register` - Register a new user
-- `POST /auth/login` - Log in and receive a JWT
-- `GET /auth/me` - Get the currently authenticated user
+## Role Matrix
 
-### Users
-
-- `GET /users` - Get all users, admin only
-- `GET /users/:id` - Get a user by ID, admin only
-- `PATCH /users/:id` - Update a user, admin only
-- `DELETE /users/:id` - Delete a user, admin only
-
-### Financial Records
-
-- `POST /records` - Create a record, analyst/admin only
-- `GET /records` - Get records with filters and pagination
-- `GET /records/:id` - Get a single record
-- `PATCH /records/:id` - Update a record, admin only
-- `DELETE /records/:id` - Delete a record, admin only
-
-### Dashboard
-
-- `GET /dashboard/summary` - Get income/expense summary
-- `GET /dashboard/category-totals` - Get category-wise totals
-- `GET /dashboard/monthly-trends` - Get monthly trend data
-
-## Role-Based Permissions
-
-| Action | Viewer | Analyst | Admin |
+| Capability | Viewer | Analyst | Admin |
 |---|---:|---:|---:|
 | View records | Yes | Yes | Yes |
 | Create records | No | Yes | Yes |
@@ -133,89 +88,91 @@ http://localhost:3000/api
 | View dashboard | Yes | Yes | Yes |
 | Manage users | No | No | Yes |
 
-## Validation Notes
+## Test Evidence
 
-- Request bodies are validated with Zod before controller logic runs.
-- Query parameters for record listing are coerced so values like `page=1` and `limit=5` work correctly.
-- Date filters are accepted as query strings and converted before being used in database queries.
-
-## Testing
-
-### Verified API Test Run
-
-The full API suite was run with `npm run test:api` and passed successfully.
-
-**Summary**
+Automated suite executed with `npm run test:api`.
 
 - Passed: 14
 - Failed: 0
 - Success Rate: 100%
 
-**Passed Test Cases**
+Validated scenarios include:
 
-- Health Check
-- Admin Login
-- Analyst Login
-- Viewer Login
-- Admin Creates Record
-- Viewer Cannot Create
-- Get Records
-- Admin Updates Record
-- Dashboard Summary
-- Category Totals
-- Monthly Trends
-- Invalid Login
-- No Token
-- Admin Deletes Record
+- Health check
+- Role-specific login flows
+- Authorized and unauthorized record creation behavior
+- Record retrieval with pagination
+- Admin update/delete flows
+- Dashboard endpoint responses
+- Unauthorized access and invalid credential handling
 
-### Quick Smoke Test
+## Deployment
 
-You can also run the lightweight smoke test:
+- Deployed on Render
+- Production configuration supports environment-based port and MongoDB URI
+- Includes root and API route handling for deployment diagnostics and health checks
+
+## Local Setup
+
+### Prerequisites
+
+- Node.js 14+
+- npm
+- MongoDB (Atlas or local)
+
+### Install and run
 
 ```bash
-npm run test:quick
+npm install
+npm run dev
 ```
 
-## Error Handling
+### Environment variables
 
-The API returns standard HTTP status codes for common outcomes:
+```env
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=<your_mongodb_uri>
+JWT_SECRET=<your_secret>
+JWT_EXPIRE=7d
+BCRYPT_ROUNDS=10
+```
 
-- `200` Success
-- `201` Created
-- `204` No Content
-- `400` Validation error
-- `401` Unauthorized
-- `403` Forbidden
-- `404` Not Found
-- `500` Internal Server Error
+### Useful scripts
+
+```bash
+npm run start
+npm run dev
+npm run seed
+npm run seed:atlas:reset
+npm run test:api
+npm run test:quick
+```
 
 ## Project Structure
 
 ```text
-├── server.js
-├── src/
-│   ├── app.js
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   └── utils/
-└── scripts/
-    ├── seedAtlas.js
-    ├── testApiWorking.js
-    ├── testApiWithFetch.js
-    ├── quickTestWithFetch.js
-    └── runTests.bat
+server.js
+src/
+  app.js
+  config/
+  controllers/
+  middleware/
+  models/
+  routes/
+  services/
+  utils/
+scripts/
 ```
 
-## Notes
+## Candidate Notes
 
-- The seed script uses the same credentials documented in the test suite.
-- The application expects MongoDB to be reachable before running the API tests.
-- If `npm run test:api` fails with a 400 on record listing, verify the query validation schema and ensure the server is running on port 3000.
+This project was built to emphasize engineering fundamentals recruiters and hiring managers evaluate in backend candidates:
 
-## License
+- Practical API security
+- Maintainable code organization
+- Correct authorization boundaries
+- Deployability and production readiness
+- Testing and issue resolution discipline
 
-MIT
+
